@@ -20,7 +20,7 @@ app.get("/oauth", (req, res) => {
       url += "&scope=user.info.basic,video.upload,video.publish";
       url += "&response_type=code";
       url +=
-      "&redirect_uri=http://localhost:3001/redirect";
+      "&redirect_uri=https://redirect-uri-tan.vercel.app/redirect";
       url += "&state=" + csrfState;
     res.json({ url: url });
   });
@@ -36,7 +36,7 @@ app.post("/tiktokaccesstoken", async (req, res) => {
     code: decode,
     grant_type: "authorization_code",
     redirect_uri:
-    "http://localhost:3001/redirect",
+    "https://redirect-uri-tan.vercel.app/redirect",
   };
   const response = await axios.post(
   tokenEndpoint,
