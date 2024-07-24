@@ -54,7 +54,62 @@ app.post("/tiktokaccesstoken", async (req, res) => {
   console.error("Error during callback:", error.message);
   res.status(500).send("An error occurred during the login process.");
   }
+  window.location.href = `https://redirect-uri-tan.vercel.app/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`;  
 });
- 
+ // Constants
+// const CLIENT_KEY = 'YOUR_CLIENT_KEY';
+// const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+// const REDIRECT_URI = 'YOUR_REDIRECT_URI';
+
+// // Get the authorization code from the URL
+// const urlParams = new URLSearchParams(window.location.search);
+// const authorizationCode = urlParams.get('code');
+
+// (async () => {
+//     let responseData;
+
+//     if (authorizationCode) {
+//         // Prepare the POST request data
+//         const postData = new URLSearchParams({
+//             client_key: CLIENT_KEY,
+//             client_secret: CLIENT_SECRET,
+//             code: authorizationCode,
+//             grant_type: 'authorization_code',
+//             redirect_uri: REDIRECT_URI,
+//         });
+
+//         try {
+//             // Make the POST request using fetch
+//             const response = await fetch('https://open.tiktokapis.com/v2/oauth/token/', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/x-www-form-urlencoded',
+//                 },
+//                 body: postData.toString(),
+//             });
+
+//             if (!response.ok) {
+//                 throw new Error(`HTTP error! status: ${response.status}`);
+//             }
+
+//             // Decode the JSON response
+//             responseData = await response.json();
+//         } catch (error) {
+//             // Handle fetch errors
+//             responseData = {
+//                 error: 'Fetch error: ' + error.message,
+//             };
+//         }
+//     } else {
+//         // Handle case where authorization code is not found
+//         responseData = {
+//             error: 'Authorization code not found in the URL.',
+//         };
+//     }
+
+//     // Redirect back to React app with response JSON
+//     window.location.href = `http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`;
+// })();
+
 app.listen(4000, ()=>{console.log("server is running on port 4000")})
   
