@@ -54,7 +54,7 @@ app.post("/tiktokaccesstoken", async (req, res) => {
   console.error("Error during callback:", error.message);
   res.status(500).send("An error occurred during the login process.");
   }
-  window.location.href = `https://redirect-uri-tan.vercel.app/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`;  
+  window.location.href = `http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`;  
 });
  // Constants
 // const CLIENT_KEY = 'YOUR_CLIENT_KEY';
