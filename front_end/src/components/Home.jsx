@@ -3,7 +3,7 @@ import axios from "axios";
 
 const Home = () => {
   const request_token = async () => {
-    const response = await axios.get("https://redirect-uri-u98q.onrender.com/oauth");
+    const response = await axios.get("http://localhost:4000/oauth");
     window.location.href = `${response.data.url}`;
   };
 return (
