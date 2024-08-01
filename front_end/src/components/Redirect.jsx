@@ -17,7 +17,7 @@ const Redirect = () => {
     axios.post("http://localhost:4000/tiktokaccesstoken", {
       code,
     })
-      .then((response) => {
+    .then((response) => {
         const parsedResponse = response.data; // Assuming JSON response
         setResponseData(parsedResponse);
         setAccessToken(parsedResponse.access_token);
