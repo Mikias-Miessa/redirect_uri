@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import TikTokCreatorInfo from './TikTokCreatorInfo';
+import TikTokCreatorInfo from '../../src/components/TikTokCreatorInfo';
 // import EditorPage from './EditorPage';
 // import { Link } from 'react-router-dom';
 
