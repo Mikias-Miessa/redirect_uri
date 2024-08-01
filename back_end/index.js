@@ -28,42 +28,62 @@ app.get("/oauth", (req, res) => {
     res.json({ url: url });
   });
 
-app.post("/tiktokaccesstoken", async (req, res) => {
-  try {
-    const { code } = req.body;
-    const decode = decodeURI(code);
-    const tokenEndpoint = "https://open.tiktokapis.com/v2/oauth/token/";
-    const params = {
-    client_key: "aw0h2vs3s39ad7dk",
-    client_secret: "Gd5cLdFaAsv0pzQgidmWWkkeQHxoyBZt",
-    code: decode,
-    grant_type: "authorization_code",
-    redirect_uri:
-    "https://redirect-uri-tan.vercel.app/redirect",
-  };
-  const response = await axios.post(
-  tokenEndpoint,
-  querystring.stringify(params),
-  {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Cache-Control": "no-cache",
-    },
-  }
-  );
-  console.log("response>>>>>>>", response.data);
-  // res.send(response.data);
-  const responseData = response.data;
-  // window.location.href = `http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`; 
-  res.redirect(`http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`);
-  console.log('Here')
-  } catch (error) {
-  console.error("Error during callback:", error.message);
-  res.status(500).send("An error occurred during the login process.");
-  }
+  app.post("/tiktokaccesstoken", async (req, res) => {
+    try {
+      const { code } = req.body;
+      const decode = decodeURI(code);
+      const tokenEndpoint = "https://open.tiktokapis.com/v2/oauth/token/";
+      const params = {
+        client_key: "aw0h2vs3s39ad7dk",
+        client_secret: "Gd5cLdFaAsv0pzQgidmWWkkeQHxoyBZt",
+        code: decode,
+        grant_type: "authorization_code",
+        redirect_uri: "https://redirect-uri-tan.vercel.app/redirect",
+      };
   
+      const response = await axios.post(
+        tokenEndpoint,
+        querystring.stringify(params),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Cache-Control": "no-cache",
+          },
+        }
+      );
   
+      // Log and send the response data back to the frontend
+      console.log("response>>>>>>>", response.data);
+      res.json(response.data); // Send JSON response back to the frontend
+    } catch (error) {
+      console.error("Error during callback:", error.message);
+      res.status(500).json({ error: "An error occurred during the login process." });
+    }
+  });
+  app.post('/api/creator_info', async (req, res) => {
+    const url = 'https://open.tiktokapis.com/v2/post/publish/creator_info/query/';
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(400).json({ error: 'Authorization header is missing' });
+    }
+
+    try {
+        const response = await axios.post(url, {}, {
+            headers: {
+                'Authorization': authHeader,
+                'Content-Type': 'application/json; charset=UTF-8'
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        res.status(error.response.status || 500).json({ error: error.message });
+    }
 });
+  
+// window.location.href = `http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`; 
+// res.redirect(`http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`);
+
 
 // const REDIRECT_URI = 'https://redirect-uri-tan.vercel.app/redirect';
 // const PORT = 4000
