@@ -4,11 +4,14 @@ const cors = require("cors");
 const axios = require("axios");
 const app = express();
 app.use(cors());
+const allowedOrigins = ['http://localhost:3000', 'https://redirect-uri-tan.vercel.app'];
+
+app.use(cors({ origin: allowedOrigins }))
+
 app.use(express.json());
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-
 
 
 app.get("/oauth", (req, res) => {
@@ -49,13 +52,69 @@ app.post("/tiktokaccesstoken", async (req, res) => {
   }
   );
   console.log("response>>>>>>>", response.data);
-  res.send(response.data);
+  // res.send(response.data);
+  const responseData = response.data;
+  // window.location.href = `http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`; 
+  res.redirect(`http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`);
+  console.log('Here')
   } catch (error) {
   console.error("Error during callback:", error.message);
   res.status(500).send("An error occurred during the login process.");
   }
-  window.location.href = `http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`;  
+  
+  
 });
+
+// const REDIRECT_URI = 'https://redirect-uri-tan.vercel.app/redirect';
+// const PORT = 4000
+// app.get('/oauth/callback', (req, res) => {
+//     const csrfState = Math.random().toString(36).substring(2);
+//     res.cookie("csrfState", csrfState, { maxAge: 60000 });
+
+//     const authUrl = `https://www.tiktok.com/v2/auth/authorize/?client_key=aw0h2vs3s39ad7dk&scope=user.info.basic,video.upload,video.publish&response_type=code&redirect_uri='https://redirect-uri-tan.vercel.app/redirect'&state=${csrfState}`;
+    
+
+//     res.redirect(authUrl);  // Redirect the user to the TikTok authorization page
+// });
+
+// app.get('/oauth/redirect', async (req, res) => {
+//     const authorizationCode = req.query.code;
+
+//     if (!authorizationCode) {
+//         return res.redirect(`http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify({ error: 'Authorization code not found in the URL.' }))}`);
+//     }
+
+//     try {
+//         const response = await axios.post('https://open.tiktokapis.com/v2/oauth/token/', new URLSearchParams({
+//             client_key: 'aw0h2vs3s39ad7dk',
+//             client_secret: 'Gd5cLdFaAsv0pzQgidmWWkkeQHxoyBZt',
+//             code: authorizationCode,
+//             grant_type: 'authorization_code',
+//             redirect_uri: REDIRECT_URI,
+//         }).toString(), {
+//             headers: {
+//                 'Content-Type': 'application/x-www-form-urlencoded',
+//             },
+//         },{timeout:1000});
+
+//         const responseData = response.data;
+
+//         // Redirect to React app with the response data
+//         res.redirect(`http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`);
+//     } catch (error) {
+//         console.error('Error during token exchange:', error);
+//         const responseData = { error: 'Failed to exchange token' };
+//         res.redirect(`http://localhost:3000/redirect/?response=${encodeURIComponent(JSON.stringify(responseData))}`);
+//     }
+// });
+// app.listen(PORT, () => {
+//   console.log(`Server running on http://localhost:${PORT}`);
+// });
+
+
+
+
+
  // Constants
 // const CLIENT_KEY = 'YOUR_CLIENT_KEY';
 // const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
