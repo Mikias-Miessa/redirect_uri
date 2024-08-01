@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-
 const Home = () => {
   const request_token = async () => {
     const response = await axios.get("http://localhost:4000/oauth");
