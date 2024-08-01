@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TikTokCreatorInfo from './TikTokCreatorInfo';
 // import EditorPage from './EditorPage';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const Redirect = () => {
   const [responseData, setResponseData] = useState(null);
@@ -36,9 +36,7 @@ const Redirect = () => {
         <div className="text-center">
           <h3 className="text-3xl mb-4">Welcome</h3>
           <TikTokCreatorInfo accessToken={accessToken}/>
-          {/* <Link to={{ pathname: "/editor", state: { accessToken } }}> */}
           <button className="bg-razzmatazz text-white mt-2 py-2 px-4 rounded-lg shadow-lg hover:bg-splash transition-colors">Create</button>
-          {/* </Link> */}
         </div>
         ) : (
         <p>Handling TikTok Authorization...</p>
